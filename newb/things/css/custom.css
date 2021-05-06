@@ -1,0 +1,343 @@
+
+/*=============================================================
+    Authour URI: www.binarycart.com
+    License: Commons Attribution 3.0
+
+    http://creativecommons.org/licenses/by/3.0/
+
+    100% To use For Personal And Commercial Use.
+    IN EXCHANGE JUST GIVE US CREDITS AND TELL YOUR FRIENDS ABOUT US
+   
+    ========================================================  */
+/*==============================================
+    GENERAL  STYLES    
+    =============================================*/
+
+ body {
+    font-family: 'Open Sans', sans-serif;
+    line-height:30px;
+}
+
+ #wrapper {
+    width: 100%;
+    margin-top:50px;
+}
+
+#page-wrapper {
+    padding: 15px 15px;
+    min-height: 600px;
+    background:#F3F3F3;
+   
+}
+#page-inner {
+    width:100%;
+    margin:10px 20px 10px 0px;
+    background-color:#fff!important;
+    padding:10px;
+    min-height:1050px;
+}
+.pad-top {
+    padding-top:15px;
+}
+/*==============================================
+    MENU STYLES    
+    =============================================*/
+
+.sidebar-collapse .nav {
+  padding:0;
+    padding-top:50px;
+}
+
+.sidebar-collapse > .nav > li > a {
+  padding: 6px 8px 3px 10px;
+    color: #214761;
+font-weight: 900;
+font-size: 16px;
+}
+.sidebar-collapse > .nav > li {
+  border-bottom:1px solid #e1e1e1;
+}
+.sidebar-collapse .nav > li > a:hover,
+.sidebar-collapse .nav > li > a:focus {
+  
+  background:aliceblue;
+  outline:0;
+}
+
+/* Style the sidenav links and the dropdown button */
+.dropdown {
+  padding: 6px 8px 3px 10px;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 16px;
+  color: #214761;
+  outline:0;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  border-bottom:1px solid #e1e1e1;    
+      
+}
+
+/* On mouse-over */
+.dropdown:hover {
+ color: #F3F3F3;
+  background:aliceblue;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #F3F3F3;
+  padding-left: 8px;
+}
+
+.navbar-side {
+  border:none;
+  background-color: deepskyblue;
+  
+}
+.navbar-inverse {
+
+background-color: lightskyblue;
+border-color: #F0F0F0;
+min-height: 100px;
+}
+
+.nav > li > a > i {
+    margin-right:10px;
+}
+.logout-spn {
+    float:right;
+    color:#fff;
+    font-size:20px;
+    font-weight:600;
+    margin:20px;
+    margin: 10px 25px 10px 50px;
+}
+    .logout-spn a {
+        text-decoration:none;
+    }
+.active-link {
+    background-color:#f3f3f3;
+}
+    
+/*==============================================
+    DASHBOARD STYLES    
+    =============================================*/
+.div-square {
+    padding:5px;
+    border:3px double #e1e1e1;
+    -webkit-border-radius:8px;
+   -moz-border-radius:8px;
+    border-radius:8px;
+    margin:5px;
+
+}
+
+.div-square> a,.div-square> a:hover {
+    color:#808080;
+     text-decoration:none;
+}
+/*==============================================
+    FOOTER STYLES     
+    =============================================*/
+.footer {
+    background-color:lightskyblue;
+    width:100%;
+    color:#fff;
+    padding:20px 50px 20px 50px;
+     padding-left:20px;
+}
+
+    .footer > a, .footer>a:hover {
+       
+        color:#fff;
+    }
+
+/*==============================================
+    MEDIA QUERIES     
+    =============================================*/
+ 
+ @media(min-width:768px) {
+     #page-wrapper{
+               margin: 0 0 0 260px;
+        padding: 15px 30px;
+        min-height: 1050px;
+    
+    }
+  
+      .navbar-side {
+        z-index: 1;
+        position: absolute;
+        width: 260px;
+       
+    }
+
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*==============================================
+  password change style  
+    =============================================*/
+
+
+
+
+.container {
+    width: 60%;
+    margin: 0 auto;
+    background-color: #f7f7f7;
+    color: #757575;
+    font-family: 'Raleway', sans-serif;
+    text-align: left;
+    padding: 30px;
+}
+h2 {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.container p {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.regisFrm input[type="text"], .regisFrm input[type="email"], .regisFrm input[type="password"] {
+    width: 54.5%;
+    padding: 10px;
+    margin: 10px 0;
+    outline: none;
+    color: #000;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+.send-button {
+    text-align: center;
+    margin-top: 20px;
+}
+.send-button input[type="submit"], .button input[type="button"] {
+    padding: 10px 0;
+    margin: 10px 0;
+    width: 65%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    color: #FFF;
+    background-color: midnightblue;
+    cursor: pointer;
+}
+.send-button input[type="submit"]:hover, .button input[type="button"]:hover {
+    background-color: gray;
+}
+a.logout{float: right;}
+p.success{color:#34A853;}
+p.error{color:#EA4335;}
+
+
+
+
+
+
+
+/*==============================================
+ popup timeup 
+    =============================================*/
+
+
+        .popup {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            display: none;
+            top: 0px;
+            left: 0px;
+            background: rgba(0,0,0,0.75);
+            z-index: 9999;
+        }
+
+        /* Inner */
+        .popup-inner {
+            max-width: 700px;
+            width: 90%;
+            padding: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0,0,0,1);
+            border-radius: 3px;
+            background: #fff;
+        }
+
+        .popup-inner-small {
+            max-width: 400px;
+            width: 90%;
+            padding: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0,0,0,1);
+            border-radius: 3px;
+            background: #fff;
+        }
+
+        /* Close Button */
+        .popup-close {
+            width: 30px;
+            height: 30px;
+            padding-top: 4px;
+            display: inline-block;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            transition: ease 0.25s all;
+            -webkit-transform: translate(50%, -50%);
+            transform: translate(50%, -50%);
+            border-radius: 1000px;
+            background: rgba(0,0,0,0.8);
+            font-family: Arial, Sans-Serif;
+            font-size: 20px;
+            text-align: center;
+            line-height: 100%;
+            color: #fff;
+        }
+
+            .popup-close:hover {
+                -webkit-transform: translate(50%, -50%) rotate(180deg);
+                transform: translate(50%, -50%) rotate(180deg);
+                background: rgba(0,0,0,1);
+                text-decoration: none;
+            }
+
+
+        /* Make the badge float in the top right corner of the button */
+        .button__badge {
+            background-color: #fa3e3e;
+            border-radius: 5px;
+            color: white;
+            padding: 3px 3px;
+            font-size: 10px;
+            position: absolute; /* Position the badge within the relatively positioned button */
+            top: 0;
+            right: -12px;
+        }
+    

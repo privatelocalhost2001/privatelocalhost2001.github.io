@@ -1,0 +1,428 @@
+<?php
+session_start();
+require('../things/sources/conn_auth.php');
+require('../things/sources/customInfo.php');
+require('../things/sources/ipb.php');
+
+if(isset($_POST['action'])){
+
+$sql = "create table if not exists credit_info(    
+                                                  transact_id int(11) NOT NULL auto_increment, 
+                                                  payee_name varchar(60) NOT NULL default '', 
+												  cust_name varchar(60) NOT NULL default '',
+												  accnt_nmb varchar(60) NOT NULL default '',
+												  trans_type varchar(60) NOT NULL default '',
+												  amt_cred int(60) NOT NULL default 0,
+												  amt_dep int(60) NOT NULL default 0,
+												  dat_pay varchar(60) NOT NULL default '', 
+												  PRIMARY KEY(transact_id))
+											      ENGINE = MyISAM";
+												  
+												  
+											 
+$t_query = mysql_query($sql)
+or die(mysql_error());
+
+
+$selAcc = mysql_query("select * from customer_info where acct_nmb = '" . $_POST['accnt_nmb'] . "'") or die(mysql_error()); 
+
+if(!mysql_num_rows($selAcc)){
+header("location:transaction.php?msg=Sorry this account number does not exists please check and try again later");
+}else{
+if($_POST['trans_type']=="Credit"){
+$amt_credit = $_POST['amt'];
+$amt_debit = '0';
+}else{
+$amt_credit = '0';
+$amt_debit = $_POST['amt'];
+}
+
+$ins = mysql_query("insert into credit_info (transact_id, payee_name, payee_accnt, cust_name, accnt_nmb, trans_type, amt_cred, amt_dep, dat_pay) values (NULL, '" . $_POST['payee_name'] . "', '" . $_POST['payee_accnt'] . "', '" . $_POST['cust_name'] . "', '" . $_POST['accnt_nmb'] . "', '" . $_POST['trans_type'] . "', '$amt_credit', '$amt_debit',  '" . date("Y-m-d") . "')") or die(mysql_error());
+
+header("location:view_all_transact.php");
+}
+}
+
+?>
+<?php include 'header.php'; ?>
+<?php include 'sidebar.php'; ?>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Dashboard
+        <small>Control panel</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <!-- /.row -->
+      <!-- Main row -->
+<div class="row">
+        <!-- Left col -->
+        <section class="col-lg-7 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="nav-tabs-custom">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-right">
+              <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
+              <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
+              <li class="pull-left header"><i class="fa fa-inbox"></i> Registered Users</li>
+            </ul>
+            <div class="tab-content no-padding">
+              <div style="margin:20px 0px 0px 10px;" class="RadGrid RadGrid_MetroTouch table-responsive">    
+                          <table width="100%" align="center" cellpadding="3" cellspacing="1" bgcolor="#013694">
+                  <tr>
+                  <th height="32" bgcolor="#007EB6"><div align="left" class="style2 style1 style12">No</div></th>
+                  <th bgcolor="#007EB6"><div align="left" class="style2 style1 style12">Full Name</div></th>
+                  <th bgcolor="#007EB6"><div align="left" class="style2 style1 style12">Account</div></th>
+                  <th bgcolor="#007EB6"><div align="left" class="style2 style1 style12">Country</div></th>
+                   <th bgcolor="#007EB6"><div align="left" class="style2 style1 style12">&nbsp;</div></th>
+                   </tr>
+                  <?php
+				  $i=0;
+				  $seLInfo = $conn->query("select * from customer_info WHERE customer_id != '"  . $row['cust_id'] . "'") or die(mysql_error());
+                  while($rowInfo = $seLInfo->fetch_array()){
+				  $i++;
+				  ?>
+				  <tr style="border-bottom:1px solid #666666;">
+                  <td height="30" bgcolor="#FFFFFF"><div align="left"><?php echo $i; ?></div></td>
+                  <td bgcolor="#FFFFFF"><div align="left"><?php echo $rowInfo['cust_name']; ?></div></td>
+                   <td bgcolor="#FFFFFF"><div align="left"><?php echo $rowInfo['acct_nmb']; ?></div></td> 
+                   <td bgcolor="#FFFFFF"><div align="left"><?php echo $rowInfo['country']; ?></div></td> 
+					<td bgcolor="#FFFFFF"><div align="left"><a href="view_transact_info.php?acct_nmb=<?php echo $rowInfo['acct_nmb']; ?>">View </a></div></td>
+					</tr>
+					<?php
+					}
+					?>	
+                    </table>          
+            </div>
+              
+              <!-- Morris chart - Sales -->
+              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
+              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+            
+            
+            </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+
+          <!-- Chat box -->
+          <!-- /.box (chat box) -->
+          <!-- TO DO List -->
+          <!-- /.box -->
+          <!-- quick email widget -->
+        </section>
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-5 connectedSortable">
+
+          <!-- Map box -->
+          <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header">
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip"
+                        title="Date range">
+                  <i class="fa fa-calendar"></i></button>
+                <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse"
+                        data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                  <i class="fa fa-minus"></i></button>
+              </div>
+              <!-- /. tools -->
+
+              <i class="fa fa-map-marker"></i>
+
+              <h3 class="box-title">
+                Visitors
+              </h3>
+            </div>
+            <div class="box-body">
+              <div id="world-map" style="height: 250px; width: 100%;"></div>
+            </div>
+            <!-- /.box-body-->
+            <div class="box-footer no-border">
+              <div class="row">
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-1"></div>
+                  <div class="knob-label">Visitors</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-2"></div>
+                  <div class="knob-label">Online</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center">
+                  <div id="sparkline-3"></div>
+                  <div class="knob-label">Exists</div>
+                </div>
+                <!-- ./col -->
+              </div>
+              <!-- /.row -->
+            </div>
+          </div>
+          <!-- /.box -->
+
+          <!-- solid sales graph -->
+          <!-- /.box -->
+          <!-- Calendar -->
+          <!-- /.box -->
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+ <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.0
+    </div>
+    <strong>Copyright &copy; <?php echo date('Y'); ?> <a href="https://adminlte.io"><?php echo $site_name ; ?></a>.</strong> All rights
+    reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-user bg-yellow"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+
+                <p>New phone +1(800)555-1234</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+
+                <p>nora@example.com</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-file-code-o bg-green"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+
+                <p>Execution time 5 seconds</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="label label-danger pull-right">70%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Update Resume
+                <span class="label label-success pull-right">95%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Laravel Integration
+                <span class="label label-warning pull-right">50%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Back End Framework
+                <span class="label label-primary pull-right">68%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Allow mail redirect
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Other sets of options are available
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Expose author name in posts
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Allow the user to show his name in blog posts
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Show me as online
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Turn off notifications
+              <input type="checkbox" class="pull-right">
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Delete chat history
+              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+            </label>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3.1.1 -->
+<script src="plugins/jQuery/jquery-3.1.1.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- Morris.js charts -->
+
+<script src="plugins/morris/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/knob/jquery.knob.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<!-- Slimscroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+</body>
+</html>

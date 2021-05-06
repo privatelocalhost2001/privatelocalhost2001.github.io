@@ -1,0 +1,135 @@
+
+ 
+ 
+   
+       
+       
+            
+            <div class="login-box card" style="background-color: rgba(0, 38, 103, 0.68);">
+            <div class="card-body" style="    flex: 1 1 auto; padding: 1.25rem;">
+                <form class="form-horizontal form-material" id="loginform">
+              
+                    <div class="form-group m-t-20">
+                        <div class="col-sm-12 text-center">
+                            <h3 style="color: #E4E4E4;"> Online banking Sign in</h3>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group  m-t-40">
+                      <label for="account" style="color: #E4E4E4;">Login ID</label>
+                        <div class="col-xs-12">
+                            <input class="form-control" type="text" required="" id="account" name="account" style="color: #E4E4E4;" > 
+                        </div>
+                    </div>  
+                    <div class="form-group m-t-40 pwgrp">
+                      <label for="account" style="color: #E4E4E4;">Password</label>
+                        <div class="col-xs-12">
+                            <input class="form-control" type="password" required="" id="passwrd" name="passwrd" style="color: #E4E4E4;" > 
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <div class="col-md-12">
+                     <div class="forminfo" style="display: none;"><span style="background-color: green; color:#FFFFFF;  padding: 5px; text-align: center; width: 100%;">
+INVALID PIN NUMBER ENTERED</span></div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" id="submit" type="submit">Proceed</button>
+                            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" id="btnContinue" type="submit">Continue</button>
+                        </div>
+                    </div>
+                 
+                    <div class="form-group m-b-0">
+                        <div class="col-sm-12 text-center">
+                            <p style="color:#FFFFFF;">Forget Login Details? <a href="forgetPasswordEmail" class="text-info m-l-5"><b>Reset</b></a></p>
+                        </div>
+                    </div>
+                
+            </div>
+          </div></form>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    <script src="things/js/jquery-1.10.2.js"></script>
+    
+    <style type="text/css">
+    .pwgrp{
+        display: none;
+    }
+ #btnContinue{
+    display: none;
+ }   
+</style>
+       
+    
+ <script type="text/javascript">
+$(document).ready(function(){   
+$('#submit').click(function(){
+	var account = $('#account').val();
+
+
+	// chk for name and pass them out.
+
+	if (account == '') {
+		 $('.forminfo').html('<span style="background-color: red; color:#FFFFFF; padding: 5px; text-align: center; width: 100%;"> LOGIN ID FIELD IS EMPTY..</span>');
+	} else{
+		$.ajax({
+			url: "LOG-IN-OUT?action=Check username",
+			method: "POST",
+			data:{ account: account},
+			dataType:"text",
+			 beforeSend:function()
+			    {
+			        $('.forminfo').html('<span style="background-color: blue;   color:#FFFFFF; padding: 5px; text-align: center; width: 100%;">Processing your information...</span>');
+			    },
+			success:function(data){
+			if(data==1){
+               $('.pwgrp').fadeIn(300);
+               $('.forminfo').hide();
+               $('#btnContinue').show();
+               $('#submit').hide();
+            }else{
+            $('.forminfo').fadeIn().html('<span style="background-color: green; color:#FFFFFF;  padding: 5px; text-align: center; width: 100%;">INVALID LOGIN ID ENTERED</span>');
+			$('.forminfo').delay(5000).fadeOut('slow');
+				}
+                }
+			});
+	}
+    return false;
+});
+ 
+//Final submiton validation
+
+$('#loginform').bind("submit", function(){
+
+var frmdata = $(this).serialize();
+$.ajax({
+            url: "LOG-IN-OUT?action=login user",
+            method: "POST",
+            data: frmdata,
+            dataType:"text",
+             beforeSend:function()
+                {
+                    $('.forminfo').fadeIn().html('<span style="background-color: blue;   color:#FFFFFF; padding: 5px; text-align: center; width: 100%;">Processing your information...</span>');
+                },
+            success:function(data){
+            if(data==1){
+            window.location="things/sources/success.php?rd=secure-redirect";
+            }else{
+            $('.forminfo').fadeIn().html('<span style="background-color: green; color:#FFFFFF;  padding: 5px; text-align: center; width: 100%;">INVALID CUSTOMER DETAILS</span>');
+            $('.forminfo').delay(5000).fadeOut('slow');
+                }
+                }
+            });
+return false;
+})
+
+ })
+</script>
+   

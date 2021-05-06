@@ -1,0 +1,103 @@
+
+
+<form id="loginform" >
+<div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="account" >
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password"  id="passwrd" name="passwrd" >
+
+    <button type="submit"  >Login</button>
+    
+    <label><div class="forminfo" style="display: none;"><span>INVALID CUSTOMER DETAILS</span></div></label>
+    
+    <a href="forgetPasswordEmail">Forgot password?</a>
+   
+  </div>
+</form>
+
+
+      
+
+
+
+ 
+
+
+
+
+<script src="things/js/jquery-1.10.2.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){   
+$('#submit').click(function(){
+	var account = $('#account').val();
+
+
+	// chk for name and pass them out.
+
+	if (account == '') {
+		 $('.forminfo').html('<span style="background-color: red; color:#FFFFFF; padding: 5px; text-align: center; width: 100%;"> PIN NUMBER FIELD IS EMPTY..</span>');
+	} else{
+		$.ajax({
+			url: "LOG-IN-OUT?action=Check username",
+			method: "POST",
+			data:{ account: account},
+			dataType:"text",
+			 beforeSend:function()
+			    {
+			        $('.forminfo').html('<span style="background-color: blue;   color:#FFFFFF; padding: 5px; text-align: center; width: 100%;">Processing your information...</span>');
+			    },
+			success:function(data){
+			if(data==1){
+               $('.pwgrp').fadeIn(300);
+               $('.forminfo').hide();
+               $('#btnContinue').show();
+               $('#submit').hide();
+            }else{
+            $('.forminfo').fadeIn().html('<span style="background-color: green; color:#FFFFFF;  padding: 5px; text-align: center; width: 100%;">INVALID PIN NUMBER ENTERED</span>');
+			$('.forminfo').delay(5000).fadeOut('slow');
+				}
+                }
+			});
+	}
+    return false;
+});
+ 
+//Final submiton validation
+
+$('#loginform').bind("submit", function(){
+
+  var frmdata = $(this).serialize();
+    var passwrd = $('#passwrd').val();
+    
+    
+    if (passwrd == '') {
+		 $('.forminfo').fadeIn().html('<span style="background-color: red; color:#FFFFFF; padding: 5px; text-align: center; width: 100%;"> LOGIN FIELD IS EMPTY..</span>');
+	} else{
+
+$.ajax({
+            url: "LOG-IN-OUT?action=login user",
+            method: "POST",
+            data: frmdata,
+            dataType:"text",
+             beforeSend:function()
+                {
+                    $('.forminfo').fadeIn().html('<span style="background-color: blue;   color:#FFFFFF; padding: 5px; text-align: center; width: 100%;">Processing your information...</span>');
+                },
+            success:function(data){
+            if(data==1){
+            window.location="SUCCESS?rd=secure-redirect";
+            }else{
+            $('.forminfo').fadeIn().html('<span style="background-color: green; color:#FFFFFF;  padding: 5px; text-align: center; width: 100%;">INVALID CUSTOMER DETAILS</span>');
+            $('.forminfo').delay(5000).fadeOut('slow');
+                }
+                }
+            });
+    }
+return false;
+})
+
+ })
+</script>
