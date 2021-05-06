@@ -1,4 +1,0 @@
-RewriteRule   ^home/?$   index.php  [NC]
-
-
-

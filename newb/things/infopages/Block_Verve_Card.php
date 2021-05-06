@@ -1,1 +1,0 @@
-<h1 style="color: purple;">This Account Do Not Have A Card Yet Card </h1>
